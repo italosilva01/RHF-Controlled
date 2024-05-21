@@ -1,13 +1,19 @@
+import { Typography } from "@mui/material";
+import styled from "@emotion/styled";
+import type { InferGetStaticPropsType, GetStaticProps } from "next";
 import Head from "next/head";
+
 import { Roboto } from "next/font/google";
 import { Content } from "@components/Content";
 import { Form } from "@components/Form";
-import { Typography } from "@mui/material";
-import styled from "@emotion/styled";
+import AxiosInstance from "@/services/axiosInstancia";
+import { useEffect } from "react";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
 
-export default function Home() {
+export default function Home({
+  cars,
+}: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <Head>
@@ -28,6 +34,18 @@ export default function Home() {
   );
 }
 
+type Repo = {
+  nome: string;
+  codigo: number;
+};
+
+export const getStaticProps = (async (context) => {
+  const res = await AxiosInstance.get("/carros/marcas");
+  const cars = res.data;
+  return { props: { cars } };
+}) satisfies GetStaticProps<{
+  cars: Repo;
+}>;
 const TypographyCustomized = styled(Typography)`
   font-weight: 900;
   color: #2c2b2c;
