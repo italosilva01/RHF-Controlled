@@ -1,5 +1,5 @@
 import { useCars } from "@/hooks/useCars";
-import { Model } from "@/types";
+import { Brand } from "@/types";
 import emotionStyled from "@emotion/styled";
 import {
   Autocomplete,
@@ -140,9 +140,9 @@ const top100Films = [
 
 export const Form = () => {
   const [check, setTemp] = useState(false);
-  const { modelCars } = useCars();
+  const { BrandCars: modelCars } = useCars();
 
-  const models = useMemo(
+  const brands = useMemo(
     () => modelCars.map((item) => ({ label: item.nome })),
     [modelCars]
   );
@@ -151,12 +151,12 @@ export const Form = () => {
       <form>
         <Autocomplete
           disablePortal
-          options={[]}
+          options={brands}
           renderInput={(params) => <TextField {...params} label="Marca" />}
         />
         <Autocomplete
           disablePortal
-          options={models}
+          options={[]}
           renderInput={(params) => <TextField {...params} label="Modelo" />}
         />
         <Collapse in={check}>

@@ -1,4 +1,4 @@
-export type Model = {
+export type Brand = {
   nome: string;
   codigo: number;
 };

@@ -1,28 +1,28 @@
-import { Model } from "@/types";
+import { Brand } from "@/types";
 import { createContext, useState } from "react";
 
 type CarsContextType = {
-  modelCars: Model[];
-  setupModels: (models: Model[]) => void;
+  BrandCars: Brand[];
+  setupBrands: (brands: Brand[]) => void;
 };
 
 interface CarsProviderProps {
   children: React.ReactNode;
 }
 export const CarsContext = createContext<CarsContextType>({
-  modelCars: [],
-  setupModels: () => {},
+  BrandCars: [],
+  setupBrands: () => {},
 });
 
 export const CarsProvider = ({ children }: CarsProviderProps) => {
-  const [models, setModels] = useState<Model[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
 
-  const setupModels = (models: Model[]) => {
-    setModels(models);
+  const setupBrands = (brand: Brand[]) => {
+    setBrands(brand);
   };
 
   return (
-    <CarsContext.Provider value={{ modelCars: models, setupModels }}>
+    <CarsContext.Provider value={{ BrandCars: brands, setupBrands }}>
       {children}
     </CarsContext.Provider>
   );
