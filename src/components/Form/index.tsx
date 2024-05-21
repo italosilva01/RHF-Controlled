@@ -64,12 +64,6 @@ export const Form = () => {
             placeholder={"Escolha um Ano..."}
             error={errors.year}
           />
-          <Autocomplete
-            disablePortal
-            style={{ width: 450 }}
-            options={[]}
-            renderInput={(params) => <TextField {...params} label="Ano" />}
-          />
         </Collapse>
         <ContainerActions check={check}>
           <Button

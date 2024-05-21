@@ -43,6 +43,7 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
               }}
               options={options}
               disableClearable
+              style={{ width: 450 }}
               renderInput={(params) => (
                 <TextField
                   {...params}
