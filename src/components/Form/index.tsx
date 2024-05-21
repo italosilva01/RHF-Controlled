@@ -25,9 +25,12 @@ export const Form = () => {
     reset,
     setValue,
     getValues,
+    resetField,
   } = useForm<InputsForm>();
 
   const currentBrand = watch("brand");
+  const currentModel = watch("model");
+  const currentYear = watch("year");
   const modelWasSelected = watch("model") !== undefined;
 
   const onSubmit: SubmitHandler<InputsForm> = (data) => {
@@ -58,6 +61,22 @@ export const Form = () => {
     }
     getModelsCurrentBrand(currentBrand);
   }, [currentBrand]);
+
+  useEffect(() => {
+    if (null === currentModel) {
+      setValue("model", "");
+      resetField("model");
+      return;
+    }
+  }, [currentModel]);
+
+  useEffect(() => {
+    if (null === currentYear) {
+      setValue("year", "");
+      resetField("year");
+      return;
+    }
+  }, [currentYear]);
 
   return (
     <CardCustomized sx={{ maxWidth: 540, width: 540 }}>
