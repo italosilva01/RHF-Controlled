@@ -1,3 +1,7 @@
+:root {
+  --main-bg-color: #f9f6fc;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -9,7 +13,7 @@ body {
   max-width: 100vw;
   max-height: 100vh;
   overflow-x: hidden;
-  background-color: #f9f6fc;
+  background-color: var(--main-bg-color);
 }
 
 body {
