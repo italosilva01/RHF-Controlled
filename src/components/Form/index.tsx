@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
-import { Box, Button, Card, Collapse } from "@mui/material";
+import { Box, Card, Collapse } from "@mui/material";
 import { AutoCompleteControlled } from "@components/AutocompleteControlled";
 import AxiosInstance from "@/services/axiosInstancia";
 import { useCars } from "@/hooks/useCars";
 import { InputsForm, Model, Year } from "@/types";
 
-import { CardCustomized, ContainerActions } from "./style";
+import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
 
 export const Form = () => {
   const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
@@ -132,20 +132,17 @@ export const Form = () => {
           />
         </Collapse>
         <ContainerActions check={modelWasSelected}>
-          <Button
+          <ButtonStyled
             variant="contained"
+            color="secondary"
             sx={{ width: 200 }}
             type="submit"
             disabled={allFieldsFilled}
           >
             Consultar preço
-          </Button>
+          </ButtonStyled>
         </ContainerActions>
       </form>
     </CardCustomized>
   );
 };
-
-interface BoxProps {
-  check?: boolean;
-}

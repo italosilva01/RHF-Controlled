@@ -59,6 +59,7 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
                 <TextField
                   {...params}
                   label={label}
+                  color="secondary"
                   placeholder={placeholder}
                   error={!!error}
                 />
