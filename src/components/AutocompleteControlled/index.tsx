@@ -1,5 +1,11 @@
 import { Autocomplete, TextField } from "@mui/material";
-import { Control, Controller, FieldValues, Path } from "react-hook-form";
+import {
+  Control,
+  Controller,
+  FieldError,
+  FieldValues,
+  Path,
+} from "react-hook-form";
 
 interface AutocompleteReactHookFormProps<TField extends FieldValues> {
   control: Control<TField, any>;
@@ -9,6 +15,7 @@ interface AutocompleteReactHookFormProps<TField extends FieldValues> {
   placeholder: string;
   label: string;
   rules?: object;
+  error: FieldError | undefined;
 }
 export const AutoCompleteControlled = <TField extends FieldValues>({
   control,
@@ -18,6 +25,7 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
   placeholder,
   label,
   rules = { required: true },
+  error,
 }: AutocompleteReactHookFormProps<TField>) => {
   return (
     <>
@@ -41,6 +49,7 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
                   label={label}
                   placeholder={placeholder}
                   value={formFieldValue}
+                  error={!!error}
                 />
               )}
             />

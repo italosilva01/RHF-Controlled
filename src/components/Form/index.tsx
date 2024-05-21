@@ -10,7 +10,7 @@ import {
   Collapse,
   TextField,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AutoCompleteControlled } from "@components/AutocompleteControlled";
 
@@ -24,7 +24,6 @@ export const Form = () => {
   );
 
   const {
-    register,
     handleSubmit,
     watch,
     formState: { errors },
@@ -33,6 +32,10 @@ export const Form = () => {
   const onSubmit: SubmitHandler<InputsForm> = (data) => {
     console.log(data);
   };
+  console.log(watch("brand"));
+  useEffect(() => {
+    console.log(errors);
+  }, []);
   return (
     <CardCustomized sx={{ maxWidth: 540, width: 540 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -42,6 +45,7 @@ export const Form = () => {
           options={brands.map((brand) => brand.label)}
           label="Marca"
           placeholder={"Escolha uma marca..."}
+          error={errors.brand}
         />
         <AutoCompleteControlled
           name={"model"}
@@ -49,8 +53,17 @@ export const Form = () => {
           options={[]}
           label="Modelo"
           placeholder={"Escolha um modelo..."}
+          error={errors.model}
         />
         <Collapse in={check}>
+          <AutoCompleteControlled
+            name={"year"}
+            control={control}
+            options={[]}
+            label="Ano"
+            placeholder={"Escolha um Ano..."}
+            error={errors.year}
+          />
           <Autocomplete
             disablePortal
             style={{ width: 450 }}
