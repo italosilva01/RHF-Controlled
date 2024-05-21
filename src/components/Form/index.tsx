@@ -3,7 +3,7 @@ import { InputsForm, Model, Year } from "@/types";
 import emotionStyled from "@emotion/styled";
 import { Box, Button, Card, Collapse } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
 import { AutoCompleteControlled } from "@components/AutocompleteControlled";
 import AxiosInstance from "@/services/axiosInstancia";
 
@@ -22,6 +22,9 @@ export const Form = () => {
     watch,
     formState: { errors },
     control,
+    reset,
+    setValue,
+    getValues,
   } = useForm<InputsForm>();
 
   const currentBrand = watch("brand");
@@ -39,12 +42,20 @@ export const Form = () => {
     );
 
     const { modelos, anos } = response.data;
+
     setCurrentOptionsModels(modelos);
     setCurrentOptionsYears(anos);
   };
 
   useEffect(() => {
-    if (undefined === currentBrand) return;
+    if (undefined === currentBrand || null === currentBrand) {
+      setCurrentOptionsModels([]);
+      setCurrentOptionsYears([]);
+      setValue("model", "");
+      setValue("year", "");
+      reset();
+      return;
+    }
     getModelsCurrentBrand(currentBrand);
   }, [currentBrand]);
 
@@ -57,6 +68,7 @@ export const Form = () => {
           options={brands.map((brand) => brand.nome)}
           label="Marca"
           placeholder={"Escolha uma marca..."}
+          formFieldValue={getValues("brand")}
           error={errors.brand}
         />
         <AutoCompleteControlled
@@ -66,6 +78,7 @@ export const Form = () => {
           label="Modelo"
           placeholder={"Escolha um modelo..."}
           error={errors.model}
+          formFieldValue={getValues("model")}
         />
         <Collapse in={modelWasSelected}>
           <AutoCompleteControlled
@@ -75,6 +88,7 @@ export const Form = () => {
             label="Ano"
             placeholder={"Escolha um Ano..."}
             error={errors.year}
+            formFieldValue={getValues("year")}
           />
         </Collapse>
         <ContainerActions check={modelWasSelected}>

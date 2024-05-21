@@ -1,10 +1,12 @@
 import { Autocomplete, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 import {
   Control,
   Controller,
   FieldError,
   FieldValues,
   Path,
+  useFormContext,
 } from "react-hook-form";
 
 interface AutocompleteReactHookFormProps<TField extends FieldValues> {
@@ -27,6 +29,14 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
   rules = { required: true },
   error,
 }: AutocompleteReactHookFormProps<TField>) => {
+  const [inputValue, setInputValue] = useState<string>("");
+
+  useEffect(() => {
+    if (formFieldValue === undefined) {
+      setInputValue("");
+    }
+  }, [formFieldValue]);
+
   return (
     <>
       <Controller
@@ -40,16 +50,16 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
               {...field}
               onChange={(_e, newValue) => {
                 onChange(newValue);
+                setInputValue(newValue);
               }}
               options={options}
-              disableClearable
               style={{ width: 450 }}
+              inputValue={inputValue}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   label={label}
                   placeholder={placeholder}
-                  value={formFieldValue}
                   error={!!error}
                 />
               )}
