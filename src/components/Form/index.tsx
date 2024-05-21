@@ -1,11 +1,12 @@
-import { useCars } from "@/hooks/useCars";
-import { InputsForm, Model, Year } from "@/types";
-import emotionStyled from "@emotion/styled";
-import { Box, Button, Card, Collapse } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
+import { Box, Button, Card, Collapse } from "@mui/material";
 import { AutoCompleteControlled } from "@components/AutocompleteControlled";
 import AxiosInstance from "@/services/axiosInstancia";
+import { useCars } from "@/hooks/useCars";
+import { InputsForm, Model, Year } from "@/types";
+
+import { CardCustomized, ContainerActions } from "./style";
 
 export const Form = () => {
   const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
@@ -20,7 +21,13 @@ export const Form = () => {
     setValue,
     getValues,
     resetField,
-  } = useForm<InputsForm>();
+  } = useForm<InputsForm>({
+    defaultValues: {
+      brand: undefined,
+      model: undefined,
+      year: undefined,
+    },
+  });
   const brands = useMemo(
     () => brandCars.map((item) => ({ nome: item.nome, value: item.codigo })),
     [brandCars]
@@ -29,7 +36,12 @@ export const Form = () => {
   const currentBrand = watch("brand");
   const currentModel = watch("model");
   const currentYear = watch("year");
+
   const modelWasSelected = currentModel !== undefined;
+  const values = getValues();
+  const allFieldsFilled = Object.values(values).some(
+    (value) => value === "" || value === null || value === undefined
+  );
 
   const onSubmit: SubmitHandler<InputsForm> = (data) => {
     console.log(data);
@@ -65,7 +77,6 @@ export const Form = () => {
       clearAndResetForm();
       return;
     }
-
     if (currentModel !== undefined || currentYear !== undefined) {
       clearFields();
     }
@@ -125,7 +136,7 @@ export const Form = () => {
             variant="contained"
             sx={{ width: 200 }}
             type="submit"
-            disabled={false}
+            disabled={allFieldsFilled}
           >
             Consultar preço
           </Button>
@@ -135,25 +146,6 @@ export const Form = () => {
   );
 };
 
-const CardCustomized = emotionStyled(Card)`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px ;
-    width: 100%;
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
-`;
-
 interface BoxProps {
   check?: boolean;
 }
-
-const ContainerActions = emotionStyled(Box)<BoxProps>`
-        margin-top:${(props) => (props.check ? "0px" : "-20px")} ;
-        display: flex;
-        justify-content: center;
-`;
