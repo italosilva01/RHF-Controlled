@@ -1,5 +1,13 @@
 import emotionStyled from "@emotion/styled";
-import { Autocomplete, Box, Button, Card, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Card,
+  Collapse,
+  TextField,
+} from "@mui/material";
+import { useState } from "react";
 const top100Films = [
   { label: "The Shawshank Redemption", year: 1994 },
   { label: "The Godfather", year: 1972 },
@@ -128,32 +136,42 @@ const top100Films = [
   { label: "Monty Python and the Holy Grail", year: 1975 },
 ];
 export const Form = () => {
+  const [temp, setTemp] = useState(false);
   return (
-    <CardCustomized sx={{ maxWidth: 500, width: 500 }}>
-      <Autocomplete
-        disablePortal
-        style={{ width: 450 }}
-        options={top100Films}
-        renderInput={(params) => <TextField {...params} label="Movie" />}
-      />
-      <Autocomplete
-        disablePortal
-        style={{ width: 450 }}
-        options={top100Films}
-        renderInput={(params) => <TextField {...params} label="Movie" />}
-      />
-      <Autocomplete
-        disablePortal
-        style={{ width: 450 }}
-        options={top100Films}
-        renderInput={(params) => <TextField {...params} label="Movie" />}
-      />
+    <CardCustomized sx={{ maxWidth: 540, width: 540 }}>
+      <form>
+        <Autocomplete
+          disablePortal
+          options={top100Films}
+          renderInput={(params) => <TextField {...params} label="Marca" />}
+        />
+        <Autocomplete
+          disablePortal
+          options={top100Films}
+          renderInput={(params) => <TextField {...params} label="Modelo" />}
+        />
+        <Collapse in={temp}>
+          <Autocomplete
+            disablePortal
+            style={{ width: 450 }}
+            options={top100Films}
+            renderInput={(params) => <TextField {...params} label="Ano" />}
+          />
+        </Collapse>
+        <ContainerActions>
+          <Button variant="contained" sx={{ width: 200 }} disabled>
+            Consultar preço
+          </Button>
+        </ContainerActions>
+      </form>
 
-      <ContainerActions>
-        <Button variant="contained" sx={{ width: 200 }} disabled>
-          Consultar preço
-        </Button>
-      </ContainerActions>
+      <button
+        onClick={() => {
+          setTemp(!temp);
+        }}
+      >
+        teste
+      </button>
     </CardCustomized>
   );
 };
@@ -162,9 +180,14 @@ const CardCustomized = emotionStyled(Card)`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 40px ;
     width: 100%;
-    gap: 20px;
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
 `;
 
 const ContainerActions = emotionStyled(Box)`

@@ -16,5 +16,4 @@ const Div = styled.div`
   height: 90vh;
   gap: 10px;
   margin: 0;
-  background-color: #f9f6fc;
 `;
