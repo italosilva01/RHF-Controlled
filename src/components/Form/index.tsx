@@ -1,26 +1,20 @@
 import { useCars } from "@/hooks/useCars";
-import { Brand, InputsForm } from "@/types";
+import { InputsForm, Model, Year } from "@/types";
 import emotionStyled from "@emotion/styled";
-import {
-  Autocomplete,
-  AutocompleteRenderInputParams,
-  Box,
-  Button,
-  Card,
-  Collapse,
-  TextField,
-} from "@mui/material";
+import { Box, Button, Card, Collapse } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { AutoCompleteControlled } from "@components/AutocompleteControlled";
+import AxiosInstance from "@/services/axiosInstancia";
 
 export const Form = () => {
-  const [check, setTemp] = useState(false);
-  const { BrandCars: modelCars } = useCars();
+  const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
+  const [currentOptionsYears, setCurrentOptionsYears] = useState<Year[]>([]);
+  const { brandCars } = useCars();
 
   const brands = useMemo(
-    () => modelCars.map((item) => ({ label: item.nome, value: item.codigo })),
-    [modelCars]
+    () => brandCars.map((item) => ({ nome: item.nome, value: item.codigo })),
+    [brandCars]
   );
 
   const {
@@ -29,20 +23,38 @@ export const Form = () => {
     formState: { errors },
     control,
   } = useForm<InputsForm>();
+
+  const currentBrand = watch("brand");
+  const modelWasSelected = watch("model") !== undefined;
+
   const onSubmit: SubmitHandler<InputsForm> = (data) => {
     console.log(data);
   };
-  console.log(watch("brand"));
+
+  const getModelsCurrentBrand = async (brand: string) => {
+    const currentBrandId = brands.find((item) => item.nome === brand)?.value;
+
+    const response = await AxiosInstance.get<any>(
+      `/carros/marcas/${currentBrandId}/modelos`
+    );
+
+    const { modelos, anos } = response.data;
+    setCurrentOptionsModels(modelos);
+    setCurrentOptionsYears(anos);
+  };
+
   useEffect(() => {
-    console.log(errors);
-  }, []);
+    if (undefined === currentBrand) return;
+    getModelsCurrentBrand(currentBrand);
+  }, [currentBrand]);
+
   return (
     <CardCustomized sx={{ maxWidth: 540, width: 540 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <AutoCompleteControlled
           name={"brand"}
           control={control}
-          options={brands.map((brand) => brand.label)}
+          options={brands.map((brand) => brand.nome)}
           label="Marca"
           placeholder={"Escolha uma marca..."}
           error={errors.brand}
@@ -50,22 +62,22 @@ export const Form = () => {
         <AutoCompleteControlled
           name={"model"}
           control={control}
-          options={[]}
+          options={currentOptionsModels.map((model) => model.nome)}
           label="Modelo"
           placeholder={"Escolha um modelo..."}
           error={errors.model}
         />
-        <Collapse in={check}>
+        <Collapse in={modelWasSelected}>
           <AutoCompleteControlled
             name={"year"}
             control={control}
-            options={[]}
+            options={currentOptionsYears.map((item) => item.nome)}
             label="Ano"
             placeholder={"Escolha um Ano..."}
             error={errors.year}
           />
         </Collapse>
-        <ContainerActions check={check}>
+        <ContainerActions check={modelWasSelected}>
           <Button
             variant="contained"
             sx={{ width: 200 }}
@@ -76,14 +88,6 @@ export const Form = () => {
           </Button>
         </ContainerActions>
       </form>
-
-      <button
-        onClick={() => {
-          setTemp(!check);
-        }}
-      >
-        teste
-      </button>
     </CardCustomized>
   );
 };

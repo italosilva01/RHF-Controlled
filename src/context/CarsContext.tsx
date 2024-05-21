@@ -2,7 +2,7 @@ import { Brand } from "@/types";
 import { createContext, useState } from "react";
 
 type CarsContextType = {
-  BrandCars: Brand[];
+  brandCars: Brand[];
   setupBrands: (brands: Brand[]) => void;
 };
 
@@ -10,7 +10,7 @@ interface CarsProviderProps {
   children: React.ReactNode;
 }
 export const CarsContext = createContext<CarsContextType>({
-  BrandCars: [],
+  brandCars: [],
   setupBrands: () => {},
 });
 
@@ -22,7 +22,7 @@ export const CarsProvider = ({ children }: CarsProviderProps) => {
   };
 
   return (
-    <CarsContext.Provider value={{ BrandCars: brands, setupBrands }}>
+    <CarsContext.Provider value={{ brandCars: brands, setupBrands }}>
       {children}
     </CarsContext.Provider>
   );

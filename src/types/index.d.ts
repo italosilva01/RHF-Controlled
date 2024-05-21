@@ -3,6 +3,9 @@ export type Brand = {
   codigo: number;
 };
 
+export type Model = Brand;
+export type Year = Brand;
+
 export type InputsForm = {
   brand: string;
   model: string;
