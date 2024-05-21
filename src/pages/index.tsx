@@ -7,6 +7,8 @@ import { Roboto } from "next/font/google";
 import { Content } from "@components/Content";
 import { Form } from "@components/Form";
 import AxiosInstance from "@/services/axiosInstancia";
+import { Model } from "@/types";
+import { useCars } from "@/hooks/useCars";
 import { useEffect } from "react";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
@@ -14,6 +16,12 @@ const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
 export default function Home({
   cars,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
+  const { setupModels } = useCars();
+
+  useEffect(() => {
+    setupModels(cars);
+  });
+
   return (
     <>
       <Head>
@@ -34,17 +42,12 @@ export default function Home({
   );
 }
 
-type Repo = {
-  nome: string;
-  codigo: number;
-};
-
 export const getStaticProps = (async (context) => {
   const res = await AxiosInstance.get("/carros/marcas");
   const cars = res.data;
   return { props: { cars } };
 }) satisfies GetStaticProps<{
-  cars: Repo;
+  cars: Model;
 }>;
 const TypographyCustomized = styled(Typography)`
   font-weight: 900;
