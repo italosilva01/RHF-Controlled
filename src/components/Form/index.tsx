@@ -11,12 +11,6 @@ export const Form = () => {
   const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
   const [currentOptionsYears, setCurrentOptionsYears] = useState<Year[]>([]);
   const { brandCars } = useCars();
-
-  const brands = useMemo(
-    () => brandCars.map((item) => ({ nome: item.nome, value: item.codigo })),
-    [brandCars]
-  );
-
   const {
     handleSubmit,
     watch,
@@ -27,14 +21,30 @@ export const Form = () => {
     getValues,
     resetField,
   } = useForm<InputsForm>();
+  const brands = useMemo(
+    () => brandCars.map((item) => ({ nome: item.nome, value: item.codigo })),
+    [brandCars]
+  );
 
   const currentBrand = watch("brand");
   const currentModel = watch("model");
   const currentYear = watch("year");
-  const modelWasSelected = watch("model") !== undefined;
+  const modelWasSelected = currentModel !== undefined;
 
   const onSubmit: SubmitHandler<InputsForm> = (data) => {
     console.log(data);
+  };
+
+  const clearAndResetForm = () => {
+    clearFields();
+    reset();
+  };
+
+  const clearFields = () => {
+    setCurrentOptionsModels([]);
+    setCurrentOptionsYears([]);
+    setValue("model", undefined);
+    setValue("year", undefined);
   };
 
   const getModelsCurrentBrand = async (brand: string) => {
@@ -52,19 +62,19 @@ export const Form = () => {
 
   useEffect(() => {
     if (undefined === currentBrand || null === currentBrand) {
-      setCurrentOptionsModels([]);
-      setCurrentOptionsYears([]);
-      setValue("model", "");
-      setValue("year", "");
-      reset();
+      clearAndResetForm();
       return;
+    }
+
+    if (currentModel !== undefined || currentYear !== undefined) {
+      clearFields();
     }
     getModelsCurrentBrand(currentBrand);
   }, [currentBrand]);
 
   useEffect(() => {
     if (null === currentModel) {
-      setValue("model", "");
+      setValue("model", undefined);
       resetField("model");
       return;
     }
@@ -72,7 +82,7 @@ export const Form = () => {
 
   useEffect(() => {
     if (null === currentYear) {
-      setValue("year", "");
+      setValue("year", undefined);
       resetField("year");
       return;
     }
