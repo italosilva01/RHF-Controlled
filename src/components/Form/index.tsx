@@ -1,3 +1,5 @@
+import { useCars } from "@/hooks/useCars";
+import { Model } from "@/types";
 import emotionStyled from "@emotion/styled";
 import {
   Autocomplete,
@@ -7,7 +9,7 @@ import {
   Collapse,
   TextField,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 const top100Films = [
   { label: "The Shawshank Redemption", year: 1994 },
   { label: "The Godfather", year: 1972 },
@@ -135,30 +137,37 @@ const top100Films = [
   { label: "3 Idiots", year: 2009 },
   { label: "Monty Python and the Holy Grail", year: 1975 },
 ];
+
 export const Form = () => {
-  const [temp, setTemp] = useState(false);
+  const [check, setTemp] = useState(false);
+  const { modelCars } = useCars();
+
+  const models = useMemo(
+    () => modelCars.map((item) => ({ label: item.nome })),
+    [modelCars]
+  );
   return (
     <CardCustomized sx={{ maxWidth: 540, width: 540 }}>
       <form>
         <Autocomplete
           disablePortal
-          options={top100Films}
+          options={[]}
           renderInput={(params) => <TextField {...params} label="Marca" />}
         />
         <Autocomplete
           disablePortal
-          options={top100Films}
+          options={models}
           renderInput={(params) => <TextField {...params} label="Modelo" />}
         />
-        <Collapse in={temp}>
+        <Collapse in={check}>
           <Autocomplete
             disablePortal
             style={{ width: 450 }}
-            options={top100Films}
+            options={[]}
             renderInput={(params) => <TextField {...params} label="Ano" />}
           />
         </Collapse>
-        <ContainerActions check={temp}>
+        <ContainerActions check={check}>
           <Button variant="contained" sx={{ width: 200 }} disabled>
             Consultar preço
           </Button>
@@ -167,7 +176,7 @@ export const Form = () => {
 
       <button
         onClick={() => {
-          setTemp(!temp);
+          setTemp(!check);
         }}
       >
         teste

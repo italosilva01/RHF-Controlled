@@ -44,10 +44,11 @@ export default function Home({
 
 export const getStaticProps = (async (context) => {
   const res = await AxiosInstance.get("/carros/marcas");
-  const cars = res.data;
+  const cars = Object.values(res.data) as Model[];
+
   return { props: { cars } };
 }) satisfies GetStaticProps<{
-  cars: Model;
+  cars: Model[];
 }>;
 const TypographyCustomized = styled(Typography)`
   font-weight: 900;
