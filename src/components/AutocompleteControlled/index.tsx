@@ -52,6 +52,7 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
                 onChange(newValue);
                 setInputValue(newValue);
               }}
+              disableClearable
               options={options}
               style={{ width: 450 }}
               inputValue={inputValue}
