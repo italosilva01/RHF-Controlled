@@ -3,6 +3,7 @@ import { Brand, InputsForm } from "@/types";
 import emotionStyled from "@emotion/styled";
 import {
   Autocomplete,
+  AutocompleteRenderInputParams,
   Box,
   Button,
   Card,
@@ -11,6 +12,7 @@ import {
 } from "@mui/material";
 import { useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { AutoCompleteControlled } from "@components/AutocompleteControlled";
 
 export const Form = () => {
   const [check, setTemp] = useState(false);
@@ -26,19 +28,20 @@ export const Form = () => {
     handleSubmit,
     watch,
     formState: { errors },
+    control,
   } = useForm<InputsForm>();
-  const onSubmit: SubmitHandler<InputsForm> = (data) => console.log(data);
-
-  console.log(watch("brand")); // watch input value by passing the name of it
+  const onSubmit: SubmitHandler<InputsForm> = (data) =>
+    console.log(watch("brand"));
 
   return (
     <CardCustomized sx={{ maxWidth: 540, width: 540 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Autocomplete
-          disablePortal
-          options={brands}
-          {...register("brand")}
-          renderInput={(params) => <TextField {...params} label="Marca" />}
+        <AutoCompleteControlled
+          name={"brand"}
+          control={control}
+          options={brands.map((item) => item.label)}
+          label="Marca"
+          placeholder={"Escolha uma marca..."}
         />
         <Autocomplete
           disablePortal
