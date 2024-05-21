@@ -19,7 +19,7 @@ export const Form = () => {
   const { BrandCars: modelCars } = useCars();
 
   const brands = useMemo(
-    () => modelCars.map((item) => ({ label: item.nome })),
+    () => modelCars.map((item) => ({ label: item.nome, value: item.codigo })),
     [modelCars]
   );
 
@@ -30,23 +30,25 @@ export const Form = () => {
     formState: { errors },
     control,
   } = useForm<InputsForm>();
-  const onSubmit: SubmitHandler<InputsForm> = (data) =>
-    console.log(watch("brand"));
-
+  const onSubmit: SubmitHandler<InputsForm> = (data) => {
+    console.log(data);
+  };
   return (
     <CardCustomized sx={{ maxWidth: 540, width: 540 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <AutoCompleteControlled
           name={"brand"}
           control={control}
-          options={brands.map((item) => item.label)}
+          options={brands.map((brand) => brand.label)}
           label="Marca"
           placeholder={"Escolha uma marca..."}
         />
-        <Autocomplete
-          disablePortal
+        <AutoCompleteControlled
+          name={"model"}
+          control={control}
           options={[]}
-          renderInput={(params) => <TextField {...params} label="Modelo" />}
+          label="Modelo"
+          placeholder={"Escolha um modelo..."}
         />
         <Collapse in={check}>
           <Autocomplete

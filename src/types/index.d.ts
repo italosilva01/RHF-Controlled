@@ -5,5 +5,6 @@ export type Brand = {
 
 export type InputsForm = {
   brand: string;
-  exampleRequired: string;
+  model: string;
+  year: string;
 };
