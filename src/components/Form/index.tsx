@@ -158,7 +158,7 @@ export const Form = () => {
             renderInput={(params) => <TextField {...params} label="Ano" />}
           />
         </Collapse>
-        <ContainerActions>
+        <ContainerActions check={temp}>
           <Button variant="contained" sx={{ width: 200 }} disabled>
             Consultar preço
           </Button>
@@ -182,7 +182,6 @@ const CardCustomized = emotionStyled(Card)`
     align-items: center;
     padding: 40px ;
     width: 100%;
-
     form {
         display: flex;
         flex-direction: column;
@@ -190,7 +189,12 @@ const CardCustomized = emotionStyled(Card)`
     }
 `;
 
-const ContainerActions = emotionStyled(Box)`
-    display: flex;
-    justify-content: center;
+interface BoxProps {
+  check?: boolean;
+}
+
+const ContainerActions = emotionStyled(Box)<BoxProps>`
+        margin-top:${(props) => (props.check ? "0px" : "-20px")} ;
+        display: flex;
+        justify-content: center;
 `;
