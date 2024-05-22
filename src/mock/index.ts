@@ -1,5 +1,3 @@
-import { Brand } from "@/types";
-
 export const brands = [
   { codigo: "1", nome: "Acura" },
   { codigo: "2", nome: "Agrale" },

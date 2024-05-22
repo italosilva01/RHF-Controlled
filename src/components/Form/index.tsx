@@ -1,15 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Collapse } from "@mui/material";
+
 import { AutoCompleteControlled } from "@components/AutocompleteControlled";
 import AxiosInstance from "@/services/axiosInstancia";
 import { useCars } from "@/hooks/useCars";
-import { InputsForm, Model, Year } from "@/types";
-
-import { useRouter } from "next/router";
-import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
 import { consultVehicle, getModels } from "@/services/endpoints";
 import { consultCarOne, modelOne } from "@/mock";
+import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
+import { defaultValues } from "@/constants";
+import { findItem } from "@utils/index";
+import { InputsForm, Model, Year } from "@/types";
 
 export const Form = () => {
   const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
@@ -26,14 +28,10 @@ export const Form = () => {
     getValues,
     resetField,
   } = useForm<InputsForm>({
-    defaultValues: {
-      brand: "",
-      model: "",
-      year: "",
-    },
+    defaultValues,
   });
   const brands = useMemo(
-    () => brandCars.map((item) => ({ nome: item.nome, value: item.codigo })),
+    () => brandCars.map((item) => ({ nome: item.nome, codigo: item.codigo })),
     [brandCars]
   );
 
@@ -48,18 +46,12 @@ export const Form = () => {
   );
 
   const onSubmit: SubmitHandler<InputsForm> = async (data) => {
-    const currentBrandId = brands.find(
-      (item) => item.nome === data.brand
-    )!.value;
-    const currentModelId = currentOptionsModels.find(
-      (item) => item.nome === data.model
-    )!.codigo;
-    const currentYearId = currentOptionsYears.find(
-      (item) => item.nome === data.year
-    )!.codigo;
+    const currentBrandId = findItem(brands, data.brand);
+    const currentModelId = findItem(currentOptionsModels, data.model);
+    const currentYearId = findItem(currentOptionsYears, data.year);
 
+    console.table({ currentBrandId, currentModelId, currentYearId });
     try {
-      console.table({ currentBrandId, currentModelId, currentYearId });
       // const response = await AxiosInstance.get<any>(
       //   consultVehicle(currentBrandId, currentModelId, currentYearId)
       // );
@@ -91,8 +83,13 @@ export const Form = () => {
     setValue("year", "");
   };
 
+  const clearFieldYear = () => {
+    setValue("year", "");
+    resetField("year");
+  };
+
   const getModelsCurrentBrand = async (brand: string) => {
-    const brandId = brands.find((item) => item.nome === brand)?.value;
+    const brandId = brands.find((item) => item.nome === brand)?.codigo;
     if (brandId == undefined) return;
     // const response = await AxiosInstance.get<any>(getModels(brandId));
     const response = { data: { ...modelOne } };
@@ -120,16 +117,15 @@ export const Form = () => {
     if (modelIsEmpty) return;
 
     if (currentYear !== "") {
-      setValue("year", "");
-      resetField("year");
+      clearFieldYear();
       return;
     }
   }, [currentModel]);
 
   useEffect(() => {
-    if (null === currentYear) {
-      setValue("year", "");
-      resetField("year");
+    const currentYearIsEmpty = currentYear === "" || undefined === currentYear;
+    if (currentYearIsEmpty) {
+      clearFieldYear();
       return;
     }
   }, [currentYear]);
