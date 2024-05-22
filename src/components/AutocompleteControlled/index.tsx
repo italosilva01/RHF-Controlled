@@ -6,7 +6,6 @@ import {
   FieldError,
   FieldValues,
   Path,
-  useFormContext,
 } from "react-hook-form";
 
 interface AutocompleteReactHookFormProps<TField extends FieldValues> {
@@ -49,7 +48,6 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
             <Autocomplete
               {...field}
               onChange={(_e, newValue) => {
-                console.log(newValue);
                 onChange(newValue);
                 setInputValue(newValue as string);
               }}

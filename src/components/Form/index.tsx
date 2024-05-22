@@ -1,17 +1,19 @@
 import { useEffect, useMemo, useState } from "react";
-import { SubmitHandler, useForm, FormProvider } from "react-hook-form";
-import { Box, Card, Collapse } from "@mui/material";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Collapse } from "@mui/material";
 import { AutoCompleteControlled } from "@components/AutocompleteControlled";
 import AxiosInstance from "@/services/axiosInstancia";
 import { useCars } from "@/hooks/useCars";
 import { InputsForm, Model, Year } from "@/types";
 
+import { useRouter } from "next/router";
 import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
 
 export const Form = () => {
   const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
   const [currentOptionsYears, setCurrentOptionsYears] = useState<Year[]>([]);
-  const { brandCars } = useCars();
+  const router = useRouter();
+  const { brandCars, setCarConsulted } = useCars();
   const {
     handleSubmit,
     watch,
@@ -43,8 +45,32 @@ export const Form = () => {
     (value) => value === "" || value === null || value === undefined
   );
 
-  const onSubmit: SubmitHandler<InputsForm> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<InputsForm> = async (data) => {
+    const currentBrandId = brands.find(
+      (item) => item.nome === data.brand
+    )?.value;
+    const currentModelId = currentOptionsModels.find(
+      (item) => item.nome === data.model
+    )?.codigo;
+    const currentYearId = currentOptionsYears.find(
+      (item) => item.nome === data.year
+    )?.codigo;
+
+    try {
+      const response = await AxiosInstance.get<any>(
+        `/carros/marcas/${currentBrandId}/modelos/${currentModelId}/anos/${currentYearId}`
+      );
+      const carConsulted = {
+        yearCar: response.data.AnoModelo,
+        brandCar: response.data.Marca,
+        modelCar: response.data.Modelo,
+        priceCar: response.data.Valor,
+      };
+      setCarConsulted(carConsulted);
+      router.push("/result");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const clearAndResetForm = () => {
@@ -60,10 +86,9 @@ export const Form = () => {
   };
 
   const getModelsCurrentBrand = async (brand: string) => {
-    const currentBrandId = brands.find((item) => item.nome === brand)?.value;
-
+    const brandId = brands.find((item) => item.nome === brand)?.value;
     const response = await AxiosInstance.get<any>(
-      `/carros/marcas/${currentBrandId}/modelos`
+      `/carros/marcas/${brandId}/modelos`
     );
 
     const { modelos, anos } = response.data;

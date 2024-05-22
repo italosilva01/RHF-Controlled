@@ -11,3 +11,10 @@ export type InputsForm = {
   model: string;
   year: string;
 };
+
+export type Car = {
+  yearCar: number;
+  brandCar: string;
+  modelCar: string;
+  priceCar: string;
+};

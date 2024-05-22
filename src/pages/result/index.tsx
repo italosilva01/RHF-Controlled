@@ -1,12 +1,14 @@
-import { Label } from "@/components/Label";
-import { TypographyCustomized } from "@/components/TypographyCustomized";
 import emotionStyled from "@emotion/styled";
 import { Box, Typography } from "@mui/material";
+import { Label } from "@/components/Label";
+import { TypographyCustomized } from "@/components/TypographyCustomized";
+import { useCars } from "@/hooks/useCars";
 
 export default function Result() {
-  const modelCar = "Cruze";
-  const yearCar = "2019";
-  const brandCar = "Chevrolet";
+  const { infoCarConsulted } = useCars();
+
+  const { brandCar, modelCar, priceCar, yearCar } = infoCarConsulted;
+
   return (
     <ResultContainer>
       <TypographyCustomized variant="h4">
@@ -14,7 +16,7 @@ export default function Result() {
       </TypographyCustomized>
       <Label>
         <Typography variant="h4" style={{ fontWeight: "900" }}>
-          R$ 100.000,00
+          {priceCar}
         </Typography>
       </Label>
       <TypographyMessage variant="body2">
