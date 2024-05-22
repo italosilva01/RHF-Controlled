@@ -23,9 +23,9 @@ export const Form = () => {
     resetField,
   } = useForm<InputsForm>({
     defaultValues: {
-      brand: undefined,
-      model: undefined,
-      year: undefined,
+      brand: "",
+      model: "",
+      year: "",
     },
   });
   const brands = useMemo(
@@ -37,7 +37,7 @@ export const Form = () => {
   const currentModel = watch("model");
   const currentYear = watch("year");
 
-  const modelWasSelected = currentModel !== undefined;
+  const modelWasSelected = currentModel !== "";
   const values = getValues();
   const allFieldsFilled = Object.values(values).some(
     (value) => value === "" || value === null || value === undefined
@@ -55,8 +55,8 @@ export const Form = () => {
   const clearFields = () => {
     setCurrentOptionsModels([]);
     setCurrentOptionsYears([]);
-    setValue("model", undefined);
-    setValue("year", undefined);
+    setValue("model", "");
+    setValue("year", "");
   };
 
   const getModelsCurrentBrand = async (brand: string) => {
@@ -73,7 +73,7 @@ export const Form = () => {
   };
 
   useEffect(() => {
-    if (undefined === currentBrand || null === currentBrand) {
+    if ("" === currentBrand) {
       clearAndResetForm();
       return;
     }
@@ -85,7 +85,7 @@ export const Form = () => {
 
   useEffect(() => {
     if (null === currentModel) {
-      setValue("model", undefined);
+      setValue("model", "");
       resetField("model");
       return;
     }
@@ -93,7 +93,7 @@ export const Form = () => {
 
   useEffect(() => {
     if (null === currentYear) {
-      setValue("year", undefined);
+      setValue("year", "");
       resetField("year");
       return;
     }

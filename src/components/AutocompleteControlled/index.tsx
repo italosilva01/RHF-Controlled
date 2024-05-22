@@ -32,7 +32,7 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
   const [inputValue, setInputValue] = useState<string>("");
 
   useEffect(() => {
-    if (formFieldValue === undefined) {
+    if (formFieldValue === "") {
       setInputValue("");
     }
   }, [formFieldValue]);
@@ -49,8 +49,9 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
             <Autocomplete
               {...field}
               onChange={(_e, newValue) => {
+                console.log(newValue);
                 onChange(newValue);
-                setInputValue(newValue);
+                setInputValue(newValue as string);
               }}
               disableClearable
               options={options}

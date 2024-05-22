@@ -2,9 +2,8 @@ import styled from "@emotion/styled";
 
 interface ContentProps {
   children: React.ReactNode;
-  isResultPage: boolean;
 }
-export const Content = ({ children, isResultPage }: ContentProps) => {
+export const Content = ({ children }: ContentProps) => {
   return <Div>{children}</Div>;
 };
 
