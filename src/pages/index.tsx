@@ -1,14 +1,10 @@
-import { Typography } from "@mui/material";
-import styled from "@emotion/styled";
 import type { InferGetStaticPropsType, GetStaticProps } from "next";
-import Head from "next/head";
-
-import { Content } from "@components/Content";
 import { Form } from "@components/Form";
 import AxiosInstance from "@/services/axiosInstancia";
 import { Brand } from "@/types";
 import { useCars } from "@/hooks/useCars";
 import { useEffect } from "react";
+import { TypographyCustomized } from "@/components/TypographyCustomized";
 
 export default function Home({
   cars,
@@ -21,13 +17,11 @@ export default function Home({
 
   return (
     <>
-      {/* <Content> */}
       <TypographyCustomized variant="h4">Tabela Fipe</TypographyCustomized>
       <TypographyCustomized variant="h5">
         Consulte o valor de um veículo de forma gratuita
       </TypographyCustomized>
       <Form />
-      {/* </Content> */}
     </>
   );
 }
@@ -40,7 +34,3 @@ export const getStaticProps = (async (context) => {
 }) satisfies GetStaticProps<{
   cars: Brand[];
 }>;
-const TypographyCustomized = styled(Typography)`
-  font-weight: 900;
-  color: #2c2b2c;
-`;
