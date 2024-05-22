@@ -73,7 +73,8 @@ export const Form = () => {
   };
 
   useEffect(() => {
-    if ("" === currentBrand) {
+    const brandIsEmpty = currentBrand === "";
+    if (brandIsEmpty) {
       clearAndResetForm();
       return;
     }
@@ -84,9 +85,13 @@ export const Form = () => {
   }, [currentBrand]);
 
   useEffect(() => {
-    if (null === currentModel) {
-      setValue("model", "");
-      resetField("model");
+    const modelIsEmpty = currentModel === "" || undefined === currentModel;
+
+    if (modelIsEmpty) return;
+
+    if (currentYear !== "") {
+      setValue("year", "");
+      resetField("year");
       return;
     }
   }, [currentModel]);
