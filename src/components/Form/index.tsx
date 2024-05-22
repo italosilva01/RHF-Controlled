@@ -50,7 +50,6 @@ export const Form = () => {
     const currentModelId = findItem(currentOptionsModels, data.model);
     const currentYearId = findItem(currentOptionsYears, data.year);
 
-    console.table({ currentBrandId, currentModelId, currentYearId });
     try {
       // const response = await AxiosInstance.get<any>(
       //   consultVehicle(currentBrandId, currentModelId, currentYearId)
@@ -96,7 +95,7 @@ export const Form = () => {
     const { modelos, anos } = response.data;
 
     setCurrentOptionsModels(modelos);
-    setCurrentOptionsYears(anos);
+    //setCurrentOptionsYears(anos);
   };
 
   useEffect(() => {
