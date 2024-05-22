@@ -8,6 +8,8 @@ import { InputsForm, Model, Year } from "@/types";
 
 import { useRouter } from "next/router";
 import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
+import { consultVehicle, getModels } from "@/services/endpoints";
+import { consultCarOne, modelOne } from "@/mock";
 
 export const Form = () => {
   const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
@@ -48,18 +50,20 @@ export const Form = () => {
   const onSubmit: SubmitHandler<InputsForm> = async (data) => {
     const currentBrandId = brands.find(
       (item) => item.nome === data.brand
-    )?.value;
+    )!.value;
     const currentModelId = currentOptionsModels.find(
       (item) => item.nome === data.model
-    )?.codigo;
+    )!.codigo;
     const currentYearId = currentOptionsYears.find(
       (item) => item.nome === data.year
-    )?.codigo;
+    )!.codigo;
 
     try {
-      const response = await AxiosInstance.get<any>(
-        `/carros/marcas/${currentBrandId}/modelos/${currentModelId}/anos/${currentYearId}`
-      );
+      console.table({ currentBrandId, currentModelId, currentYearId });
+      // const response = await AxiosInstance.get<any>(
+      //   consultVehicle(currentBrandId, currentModelId, currentYearId)
+      // );
+      const response = { data: { ...consultCarOne } };
       const carConsulted = {
         yearCar: response.data.AnoModelo,
         brandCar: response.data.Marca,
@@ -69,7 +73,9 @@ export const Form = () => {
       setCarConsulted(carConsulted);
       router.push("/result");
     } catch (error) {
-      console.error(error);
+      alert(
+        "Erro ao buscar por esses dados. O erro é na API. Por favor, tente outro modelo!!"
+      );
     }
   };
 
@@ -87,10 +93,9 @@ export const Form = () => {
 
   const getModelsCurrentBrand = async (brand: string) => {
     const brandId = brands.find((item) => item.nome === brand)?.value;
-    const response = await AxiosInstance.get<any>(
-      `/carros/marcas/${brandId}/modelos`
-    );
-
+    if (brandId == undefined) return;
+    // const response = await AxiosInstance.get<any>(getModels(brandId));
+    const response = { data: { ...modelOne } };
     const { modelos, anos } = response.data;
 
     setCurrentOptionsModels(modelos);

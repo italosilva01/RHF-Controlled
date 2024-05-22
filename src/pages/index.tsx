@@ -5,6 +5,7 @@ import { Brand } from "@/types";
 import { useCars } from "@/hooks/useCars";
 import { useEffect } from "react";
 import { TypographyCustomized } from "@/components/TypographyCustomized";
+import { brands } from "@/mock";
 
 export default function Home({
   cars,
@@ -27,9 +28,9 @@ export default function Home({
 }
 
 export const getStaticProps = (async (context) => {
-  const res = await AxiosInstance.get("/carros/marcas");
-  const cars = Object.values(res.data) as Brand[];
-
+  // const res = await AxiosInstance.get("/carros/marcas");
+  // const cars = Object.values(res.data) as Brand[];
+  const cars = Object.values(brands) as unknown as Brand[];
   return { props: { cars } };
 }) satisfies GetStaticProps<{
   cars: Brand[];
