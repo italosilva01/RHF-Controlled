@@ -8,9 +8,13 @@ const cars = Object.values(brands) as unknown as Brand[];
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
+
 describe("Page Home", () => {
   test("renders without crashing", () => {
     const { container } = render(<Home cars={cars} />);
+    expect(
+      screen.getByText("Consulte o valor de um veículo de forma gratuita")
+    ).toBeInTheDocument();
     expect(container).toMatchSnapshot();
   });
 

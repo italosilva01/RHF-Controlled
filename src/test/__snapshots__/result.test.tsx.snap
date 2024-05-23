@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page Result renders without crashing 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1r5dyym"
+  >
+    <h4
+      class="MuiTypography-root MuiTypography-h4 css-1kiosdo-MuiTypography-root"
+    >
+      Tabela Fipe: Preço 
+       
+       
+    </h4>
+    <div
+      class="MuiBox-root css-1y4qae1"
+    >
+      <h4
+        class="MuiTypography-root MuiTypography-h4 css-5lbw0b-MuiTypography-root"
+        style="font-weight: 900;"
+      />
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-body2 css-emfzs4-MuiTypography-root"
+    >
+      Este é o preço de compra do veículo
+    </p>
+  </div>
+</div>
+`;
