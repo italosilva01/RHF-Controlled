@@ -1,15 +1,15 @@
 export type Brand = {
-  nome: string;
-  codigo: number;
+  label: string;
+  value: string;
 };
 
 export type Model = Brand;
 export type Year = Brand;
 
 export type InputsForm = {
-  brand: string;
-  model: string;
-  year: string;
+  brand: Brand;
+  model: Model;
+  year: Year;
 };
 
 export type Car = {

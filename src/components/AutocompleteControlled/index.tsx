@@ -1,4 +1,5 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Brand } from "@/types";
+import { Autocomplete, TextField, AutocompleteProps } from "@mui/material";
 import { useEffect, useState } from "react";
 import {
   Control,
@@ -8,15 +9,15 @@ import {
   Path,
 } from "react-hook-form";
 
-interface AutocompleteReactHookFormProps<TField extends FieldValues> {
+interface AutocompleteReactHookFormProps<TField extends FieldValues>
+  extends AutocompleteProps<Brand, false, false, false, any> {
   control: Control<TField, any>;
-  formFieldValue?: string;
-  options: string[];
+  formFieldValue?: any;
   name: Path<TField>;
   placeholder: string;
   label: string;
   rules?: object;
-  error: FieldError | undefined;
+  error: FieldError | undefined | any;
 }
 export const AutoCompleteControlled = <TField extends FieldValues>({
   control,
@@ -47,9 +48,13 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
           return (
             <Autocomplete
               {...field}
-              onChange={(_e, newValue) => {
-                onChange(newValue);
-                setInputValue(newValue ? (newValue as string) : "");
+              getOptionLabel={(option) => (option ? option.label || "" : "")}
+              isOptionEqualToValue={(option, value) =>
+                option.label === value.label && option.value === value.value
+              }
+              onChange={(_e, newValue: Brand | Brand[], _reason, _details) => {
+                onChange(newValue as Brand);
+                setInputValue(newValue ? (newValue as Brand).label : "");
               }}
               disableClearable
               options={options}
