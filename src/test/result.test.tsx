@@ -1,6 +1,7 @@
-import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import Result from ".";
+import { render, screen } from "@testing-library/react";
+
+import Result from "../pages/result";
 
 describe("Result", () => {
   test("renders without crashing", () => {
