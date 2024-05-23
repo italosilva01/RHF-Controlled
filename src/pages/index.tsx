@@ -32,7 +32,7 @@ export const getStaticProps = (async (context) => {
   const brands = Object.values(res.data).map((item: any) => ({
     label: item.nome,
     id: item.codigo,
-  })) as unknown as Brand[] as Brand[];
+  })) as unknown as Brand[];
 
   return { props: { brands } };
 }) satisfies GetStaticProps<{
