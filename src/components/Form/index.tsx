@@ -10,9 +10,13 @@ import { useCars } from "@/hooks/useCars";
 import { consultVehicle, getModels } from "@/services/endpoints";
 import { consultCarOne, modelOne } from "@/mock";
 import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
-import { defaultValues, schema } from "@/constants";
-import { findItem } from "@utils/index";
-import { Brand, InputsForm, Model, Year } from "@/types";
+import {
+  emptyBrandValue,
+  emptyModelValue,
+  emptyYearValue,
+  schema,
+} from "@/constants";
+import { InputsForm, Model, Year } from "@/types";
 import { RHFAutocompleteField } from "../RHFAutocompleteField";
 
 export const Form = () => {
@@ -32,14 +36,6 @@ export const Form = () => {
   } = useForm<InputsForm>({
     resolver: yupResolver(schema),
   });
-
-  const emptyBrand = {} as Brand;
-  const emptyModel = {} as Model;
-  const emptyYear = {} as Year;
-
-  const emptyBrandValue = "";
-  const emptyModelValue = "";
-  const emptyYearValue = "";
 
   const currentBrand = watch("brand");
   const currentModel = watch("model");
@@ -93,7 +89,6 @@ export const Form = () => {
 
   const clearFieldYear = () => {
     setValue("year", emptyYearValue);
-    //resetField("year");
   };
 
   const getModelsCurrentBrand = async (brandId: string) => {

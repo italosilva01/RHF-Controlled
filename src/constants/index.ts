@@ -1,12 +1,9 @@
 import { Brand, Model, Year } from "@/types";
 import * as yup from "yup";
 
-export const defaultValues = {
-  brand: {} as Brand,
-  model: {} as Model,
-  year: {} as Year,
-};
-
+export const emptyBrandValue = "";
+export const emptyModelValue = "";
+export const emptyYearValue = "";
 export const schema = yup.object().shape({
   brand: yup.string().required("Campo obrigatório"),
   model: yup.string().required("Campo obrigatório"),
