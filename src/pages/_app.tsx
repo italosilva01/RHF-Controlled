@@ -1,13 +1,12 @@
-// import { Roboto } from "next/font/google";
+import { Roboto } from "next/font/google";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { CarsProvider } from "@/context/CarsContext";
 import "@/styles/globals.css";
 import { Content } from "@components/Content";
 import emotionStyled from "@emotion/styled";
 
-// const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
+const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -17,7 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <CarsProvider>
       <MainStyled
-        // className={`${roboto.className}`}
+        className={`${roboto.className}`}
         isResultPage={isResultRoute}
       >
         <Content>
