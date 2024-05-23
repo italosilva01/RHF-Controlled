@@ -3,12 +3,10 @@ import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Collapse } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
-import _ from "lodash";
 
 import AxiosInstance from "@/services/axiosInstancia";
 import { useCars } from "@/hooks/useCars";
 import { consultVehicle, getModels } from "@/services/endpoints";
-import { consultCarOne, modelOne } from "@/mock";
 import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
 import {
   emptyBrandValue,
@@ -50,20 +48,13 @@ export const Form = () => {
     [currentModel]
   );
 
-  const values = getValues();
-  const allFieldsFilled = Object.values(values).some(
-    (value) =>
-      value === emptyBrandValue || value === null || value === undefined
-  );
-
   const onSubmit: SubmitHandler<InputsForm> = async (data) => {
-    console.log(data);
+    const { brand, model, year } = data;
 
     try {
-      // const response = await AxiosInstance.get<any>(
-      //   consultVehicle(currentBrandId, currentModelId, currentYearId)
-      // );
-      const response = { data: { ...consultCarOne } };
+      const response = await AxiosInstance.get<any>(
+        consultVehicle(brand, model, year)
+      );
       const carConsulted = {
         yearCar: response.data.AnoModelo,
         brandCar: response.data.Marca,
@@ -97,20 +88,19 @@ export const Form = () => {
 
   const getModelsCurrentBrand = async (brandId: string) => {
     if (brandId == undefined) return;
-    // const response = await AxiosInstance.get<any>(getModels(brandId));
-    const response = { data: { ...modelOne } };
+    const response = await AxiosInstance.get<any>(getModels(brandId));
     const { modelos, anos } = response.data;
 
     setCurrentOptionsModels(
       () =>
-        modelos.map((item) => ({
+        modelos.map((item: any) => ({
           label: item.nome,
           id: item.codigo,
         })) as unknown as Model[]
     );
     setCurrentOptionsYears(
       () =>
-        anos.map((item) => ({
+        anos.map((item: any) => ({
           label: item.nome,
           id: item.codigo,
         })) as unknown as Year[]
