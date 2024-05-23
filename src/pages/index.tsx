@@ -28,13 +28,12 @@ export default function Home({
 }
 
 export const getStaticProps = (async (context) => {
-  // const res = await AxiosInstance.get("/carros/marcas");
+  // const res = await AxiosInstance.get(getBrandsCars);
   // const cars = Object.values(res.data) as Brand[];
   const cars = Object.values(brands).map((item) => ({
     label: item.nome,
     id: item.codigo,
   })) as unknown as Brand[];
-  console.log(cars);
   return { props: { cars } };
 }) satisfies GetStaticProps<{
   cars: Brand[];

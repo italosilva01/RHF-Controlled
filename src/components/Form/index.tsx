@@ -183,6 +183,7 @@ export const Form = () => {
         </Collapse>
         <ContainerActions check={modelWasSelected}>
           <ButtonStyled
+            data-testid="button-submit"
             variant="contained"
             color="secondary"
             sx={{ width: 200 }}

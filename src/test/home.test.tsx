@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+
 import Home from "../pages";
 import { brands } from "@/mock";
 import { Brand } from "@/types";
@@ -30,5 +31,11 @@ describe("Page Home", () => {
 
     expect(inputs[0]).toHaveValue("");
     expect(inputs[1]).toHaveValue("");
+  });
+
+  test("Button submit form is disable", () => {
+    render(<Home cars={cars} />);
+    const button = screen.getByTestId("button-submit");
+    expect(button).toBeDisabled();
   });
 });
