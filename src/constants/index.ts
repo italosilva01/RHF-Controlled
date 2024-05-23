@@ -8,16 +8,7 @@ export const defaultValues = {
 };
 
 export const schema = yup.object().shape({
-  brand: yup.object().shape({
-    label: yup.string().required("Campo obrigatório"),
-    value: yup.string().required("Campo obrigatório"),
-  }),
-  model: yup.object().shape({
-    label: yup.string().required("Campo obrigatório"),
-    value: yup.string().required("Campo obrigatório"),
-  }),
-  year: yup.object().shape({
-    label: yup.string().required("Campo obrigatório"),
-    value: yup.string().required("Campo obrigatório"),
-  }),
+  brand: yup.string().required("Campo obrigatório"),
+  model: yup.string().required("Campo obrigatório"),
+  year: yup.string().required("Campo obrigatório"),
 });

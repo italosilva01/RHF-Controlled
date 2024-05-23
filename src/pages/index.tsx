@@ -32,7 +32,7 @@ export const getStaticProps = (async (context) => {
   // const cars = Object.values(res.data) as Brand[];
   const cars = Object.values(brands).map((item) => ({
     label: item.nome,
-    value: item.codigo,
+    id: item.codigo,
   })) as unknown as Brand[];
   console.log(cars);
   return { props: { cars } };
