@@ -23,4 +23,6 @@ justify-content: center;
 
 export const ButtonStyled = emotionStyled(Button)`
     background-color: #5c18b9;
+    text-transform: none;
+
 `;
