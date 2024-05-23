@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Collapse } from "@mui/material";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { AutoCompleteControlled } from "@components/AutocompleteControlled";
 import AxiosInstance from "@/services/axiosInstancia";
@@ -9,7 +10,7 @@ import { useCars } from "@/hooks/useCars";
 import { consultVehicle, getModels } from "@/services/endpoints";
 import { consultCarOne, modelOne } from "@/mock";
 import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
-import { defaultValues } from "@/constants";
+import { defaultValues, schema } from "@/constants";
 import { findItem } from "@utils/index";
 import { InputsForm, Model, Year } from "@/types";
 
@@ -28,6 +29,7 @@ export const Form = () => {
     getValues,
     resetField,
   } = useForm<InputsForm>({
+    resolver: yupResolver(schema),
     defaultValues,
   });
   const brands = useMemo(
@@ -96,7 +98,7 @@ export const Form = () => {
     const { modelos, anos } = response.data;
 
     setCurrentOptionsModels(modelos);
-    //setCurrentOptionsYears(anos);
+    setCurrentOptionsYears(anos);
   };
 
   useEffect(() => {
