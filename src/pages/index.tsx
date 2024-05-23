@@ -8,12 +8,12 @@ import { TypographyCustomized } from "@/components/TypographyCustomized";
 import { getBrandsCars } from "@/services/endpoints";
 
 export default function Home({
-  cars,
+  brands,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const { setupBrands } = useCars();
 
   useEffect(() => {
-    setupBrands(cars);
+    setupBrands(brands);
   });
 
   return (
@@ -29,12 +29,12 @@ export default function Home({
 
 export const getStaticProps = (async (context) => {
   const res = await AxiosInstance.get(getBrandsCars);
-  const cars = Object.values(res.data).map((item: any) => ({
+  const brands = Object.values(res.data).map((item: any) => ({
     label: item.nome,
     id: item.codigo,
   })) as unknown as Brand[] as Brand[];
 
-  return { props: { cars } };
+  return { props: { brands } };
 }) satisfies GetStaticProps<{
-  cars: Brand[];
+  brands: Brand[];
 }>;
