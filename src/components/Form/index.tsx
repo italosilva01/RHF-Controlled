@@ -27,14 +27,18 @@ export const Form = () => {
   const {
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { isDirty },
     control,
     reset,
     setValue,
     getValues,
-    resetField,
   } = useForm<InputsForm>({
     resolver: yupResolver(schema),
+    defaultValues: {
+      brand: emptyBrandValue,
+      model: emptyModelValue,
+      year: emptyYearValue,
+    },
   });
 
   const currentBrand = watch("brand");
@@ -183,7 +187,7 @@ export const Form = () => {
             color="secondary"
             sx={{ width: 200 }}
             type="submit"
-            // disabled={allFieldsFilled}
+            disabled={!isDirty}
           >
             Consultar preço
           </ButtonStyled>
