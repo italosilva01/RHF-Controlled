@@ -65,6 +65,7 @@ export const RHFAutocompleteField = <
                   label={props.placeholder}
                   inputRef={ref}
                   error={!!error}
+                  color="secondary"
                 />
               )}
             />
