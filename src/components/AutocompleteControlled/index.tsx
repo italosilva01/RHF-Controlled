@@ -49,12 +49,13 @@ export const AutoCompleteControlled = <TField extends FieldValues>({
               {...field}
               onChange={(_e, newValue) => {
                 onChange(newValue);
-                setInputValue(newValue as string);
+                setInputValue(newValue ? (newValue as string) : "");
               }}
               disableClearable
               options={options}
               style={{ width: 450 }}
               inputValue={inputValue}
+              isOptionEqualToValue={(option, value) => option === value}
               renderInput={(params) => (
                 <TextField
                   {...params}
