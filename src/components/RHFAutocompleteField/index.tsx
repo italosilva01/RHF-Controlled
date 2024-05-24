@@ -42,7 +42,6 @@ export const RHFAutocompleteField = <
               onChange={(event: any, newValue) => {
                 onChange(newValue ? newValue.id : null);
               }}
-              id="controllable-states-demo"
               options={options}
               disableClearable
               style={{ width: 450 }}

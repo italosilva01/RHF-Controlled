@@ -8,15 +8,11 @@ import AxiosInstance from "@/services/axiosInstancia";
 import { useCars } from "@/hooks/useCars";
 import { consultVehicle, getModels } from "@/services/endpoints";
 import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
-import {
-  emptyBrandValue,
-  emptyModelValue,
-  emptyYearValue,
-  schema,
-} from "@/constants";
+import { emptyValue, schema } from "@/constants";
 import { InputsForm, Model, Year } from "@/types";
 import { RHFAutocompleteField } from "../RHFAutocompleteField";
 import { consultCarOne, modelOne } from "@/mock";
+import { convertArray } from "@/utils";
 
 export const Form = () => {
   const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
@@ -30,14 +26,12 @@ export const Form = () => {
     control,
     reset,
     setValue,
-    getValues,
-    resetField,
   } = useForm<InputsForm>({
     resolver: yupResolver(schema),
     defaultValues: {
-      brand: emptyBrandValue,
-      model: emptyModelValue,
-      year: emptyYearValue,
+      brand: emptyValue,
+      model: emptyValue,
+      year: emptyValue,
     },
   });
 
@@ -81,12 +75,12 @@ export const Form = () => {
   const clearFields = () => {
     setCurrentOptionsModels([]);
     setCurrentOptionsYears([]);
-    setValue("model", emptyModelValue);
-    setValue("year", emptyYearValue);
+    setValue("model", emptyValue);
+    setValue("year", emptyValue);
   };
 
   const clearFieldYear = () => {
-    setValue("year", emptyYearValue);
+    setValue("year", emptyValue);
   };
 
   const getModelsCurrentBrand = async (brandId: string) => {
@@ -95,26 +89,14 @@ export const Form = () => {
     const response = { data: { ...modelOne } };
     const { modelos, anos } = response.data;
 
-    setCurrentOptionsModels(
-      () =>
-        modelos.map((item: any) => ({
-          label: item.nome,
-          id: item.codigo,
-        })) as unknown as Model[]
-    );
-    setCurrentOptionsYears(
-      () =>
-        anos.map((item: any) => ({
-          label: item.nome,
-          id: item.codigo,
-        })) as unknown as Year[]
-    );
+    setCurrentOptionsModels(() => convertArray(modelos));
+    setCurrentOptionsYears(() => convertArray(anos));
   };
 
   useEffect(() => {
     if (currentBrand === undefined) return;
 
-    const brandIsEmpty = currentBrand === emptyBrandValue;
+    const brandIsEmpty = currentBrand === emptyValue;
     const modelIsUndefined = currentModel === undefined;
     const yearIsUndefined = currentYear === undefined;
 
@@ -129,8 +111,8 @@ export const Form = () => {
   }, [currentBrand]);
 
   useEffect(() => {
-    const modelIsEmpty = currentModel === emptyModelValue;
-    const yearIsNotEmpty = currentYear !== "";
+    const modelIsEmpty = currentModel === emptyValue;
+    const yearIsNotEmpty = currentYear !== emptyValue;
 
     if (modelIsEmpty) return;
 
@@ -142,7 +124,7 @@ export const Form = () => {
   }, [currentModel]);
 
   useEffect(() => {
-    const yearIsEmpty = currentYear === emptyYearValue;
+    const yearIsEmpty = currentYear === emptyValue;
 
     if (yearIsEmpty) {
       clearFieldYear();

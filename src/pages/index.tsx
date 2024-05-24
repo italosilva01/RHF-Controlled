@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { TypographyCustomized } from "@/components/TypographyCustomized";
 import { getBrandsCars } from "@/services/endpoints";
 import { brands } from "@/mock";
+import { convertArray } from "@/utils";
 
 export default function Home({
   brands,
@@ -32,11 +33,7 @@ export const getStaticProps = (async (context) => {
   //   label: item.nome,
   //   id: item.codigo,
   // })) as unknown as Brand[] as Brand[];
-
-  const brandsTemp = brands.map((item: any) => ({
-    label: item.nome,
-    id: item.codigo,
-  })) as unknown as Brand[];
+  const brandsTemp = convertArray(brands);
 
   return { props: { brands: brandsTemp } };
 }) satisfies GetStaticProps<{

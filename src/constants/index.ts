@@ -1,8 +1,6 @@
 import * as yup from "yup";
 
-export const emptyBrandValue = "";
-export const emptyModelValue = "";
-export const emptyYearValue = "";
+export const emptyValue = "";
 
 export const schema = yup.object().shape({
   brand: yup.string().required("Campo obrigatório"),
