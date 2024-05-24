@@ -16,6 +16,7 @@ import {
 } from "@/constants";
 import { InputsForm, Model, Year } from "@/types";
 import { RHFAutocompleteField } from "../RHFAutocompleteField";
+import { consultCarOne, modelOne } from "@/mock";
 
 export const Form = () => {
   const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
@@ -30,6 +31,7 @@ export const Form = () => {
     reset,
     setValue,
     getValues,
+    resetField,
   } = useForm<InputsForm>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -50,11 +52,12 @@ export const Form = () => {
 
   const onSubmit: SubmitHandler<InputsForm> = async (data) => {
     const { brand, model, year } = data;
-
+    console.log(data);
     try {
-      const response = await AxiosInstance.get<any>(
-        consultVehicle(brand, model, year)
-      );
+      // const response = await AxiosInstance.get<any>(
+      //   consultVehicle(brand, model, year)
+      // );
+      const response = { data: { ...consultCarOne } };
       const carConsulted = {
         yearCar: response.data.AnoModelo,
         brandCar: response.data.Marca,
@@ -88,7 +91,8 @@ export const Form = () => {
 
   const getModelsCurrentBrand = async (brandId: string) => {
     if (brandId == undefined) return;
-    const response = await AxiosInstance.get<any>(getModels(brandId));
+    // const response = await AxiosInstance.get<any>(getModels(brandId));
+    const response = { data: { ...modelOne } };
     const { modelos, anos } = response.data;
 
     setCurrentOptionsModels(
@@ -132,6 +136,7 @@ export const Form = () => {
 
     if (yearIsNotEmpty) {
       clearFieldYear();
+
       return;
     }
   }, [currentModel]);
@@ -153,14 +158,12 @@ export const Form = () => {
           control={control}
           name={"brand"}
           placeholder={"Marca"}
-          formFieldValue={getValues("brand")}
         />
         <RHFAutocompleteField
           options={currentOptionsModels}
           control={control}
           name={"model"}
           placeholder={"Modelo"}
-          formFieldValue={getValues("model")}
         />{" "}
         <Collapse in={modelWasSelected}>
           <RHFAutocompleteField
@@ -168,7 +171,6 @@ export const Form = () => {
             control={control}
             name={"year"}
             placeholder={"Ano"}
-            formFieldValue={getValues("year")}
           />
         </Collapse>
         <ContainerActions check={modelWasSelected}>
