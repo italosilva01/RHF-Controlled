@@ -6,19 +6,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import AxiosInstance from "@/services/axiosInstancia";
 import { useCars } from "@/hooks/useCars";
-import { consultVehicle, getModels } from "@/services/endpoints";
+import { consultVehicle, getModels, resultPage } from "@/services/endpoints";
 import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
 import { emptyValue, schema } from "@/constants";
-import { InputsForm, Model, Year } from "@/types";
+import { InputsForm, Model, Year, stateType } from "@/types";
 import { RHFAutocompleteField } from "../RHFAutocompleteField";
 import { consultCarOne, modelOne } from "@/mock";
 import { convertArray } from "@/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { setCarConsulted } from "@/store/reducers/car";
 
 export const Form = () => {
   const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
   const [currentOptionsYears, setCurrentOptionsYears] = useState<Year[]>([]);
   const router = useRouter();
-  const { brandCars, setCarConsulted } = useCars();
+  //const { brandCars, setCarConsulted } = useCars();
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     watch,
@@ -34,6 +37,8 @@ export const Form = () => {
       year: emptyValue,
     },
   });
+
+  const brands = useSelector((state: stateType) => state.brands);
 
   const currentBrand = watch("brand");
   const currentModel = watch("model");
@@ -58,8 +63,8 @@ export const Form = () => {
         modelCar: response.data.Modelo,
         priceCar: response.data.Valor,
       };
-      setCarConsulted(carConsulted);
-      router.push("/result");
+      dispatch(setCarConsulted(carConsulted));
+      router.push(resultPage);
     } catch (error) {
       alert(
         "Erro ao buscar por esses dados. O erro é na API. Por favor, tente outro modelo!!"
@@ -136,7 +141,7 @@ export const Form = () => {
     <CardCustomized sx={{ maxWidth: 540, width: 540 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RHFAutocompleteField
-          options={brandCars}
+          options={brands}
           control={control}
           name={"brand"}
           placeholder={"Marca"}

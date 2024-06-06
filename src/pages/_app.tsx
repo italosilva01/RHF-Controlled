@@ -1,10 +1,12 @@
 import { Roboto } from "next/font/google";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-import { CarsProvider } from "@/context/CarsContext";
+//import { CarsProvider } from "@/context/CarsContext";
 import "@/styles/globals.css";
 import { Content } from "@components/Content";
 import emotionStyled from "@emotion/styled";
+import { Provider } from "react-redux";
+import store from "@/store";
 
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "700"] });
 
@@ -14,7 +16,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const isResultRoute = router.pathname === "/result";
 
   return (
-    <CarsProvider>
+    //<CarsProvider>
+    <Provider store={store}>
       <MainStyled
         className={`${roboto.className}`}
         isResultPage={isResultRoute}
@@ -23,7 +26,8 @@ export default function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </Content>
       </MainStyled>
-    </CarsProvider>
+    </Provider>
+    //</CarsProvider>
   );
 }
 

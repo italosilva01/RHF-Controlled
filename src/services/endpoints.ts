@@ -9,3 +9,5 @@ export const consultVehicle = (
 ) => {
   return `/carros/marcas/${brandId}/modelos/${modelId}/anos/${year}`;
 };
+
+export const resultPage = "/result";
