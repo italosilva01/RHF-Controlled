@@ -2,18 +2,13 @@ import emotionStyled from "@emotion/styled";
 import { Box, Typography } from "@mui/material";
 import { Label } from "@/components/Label";
 import { TypographyCustomized } from "@/components/TypographyCustomized";
-import { useCars } from "@/hooks/useCars";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { stateType } from "@/types";
 
 export default function Result() {
-  //const { infoCarConsulted } = useCars();
   const infoCarConsulted = useSelector((state: stateType) => state.car);
 
-  useEffect(() => {
-    console.log(infoCarConsulted);
-  }, [infoCarConsulted]);
   const { brandCar, modelCar, priceCar, yearCar } = infoCarConsulted;
 
   return (

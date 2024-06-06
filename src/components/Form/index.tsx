@@ -20,7 +20,6 @@ export const Form = () => {
   const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
   const [currentOptionsYears, setCurrentOptionsYears] = useState<Year[]>([]);
   const router = useRouter();
-  //const { brandCars, setCarConsulted } = useCars();
   const dispatch = useDispatch();
   const {
     handleSubmit,
