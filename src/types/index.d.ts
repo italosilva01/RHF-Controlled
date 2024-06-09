@@ -18,3 +18,7 @@ export type Car = {
   modelCar: string;
   priceCar: string;
 };
+export type stateType = {
+  brands: Brand[];
+  car: Car;
+};

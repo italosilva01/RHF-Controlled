@@ -6,15 +6,18 @@ import { useCars } from "@/hooks/useCars";
 import { useEffect } from "react";
 import { TypographyCustomized } from "@/components/TypographyCustomized";
 import { getBrandsCars } from "@/services/endpoints";
+import { brands } from "@/mock";
+import { convertArray } from "@/utils";
+import { useDispatch } from "react-redux";
+import { setupBrands } from "@/store/reducers/brands";
 
 export default function Home({
   brands,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const { setupBrands } = useCars();
-
+  const dispatch = useDispatch();
   useEffect(() => {
-    setupBrands(brands);
-  });
+    dispatch(setupBrands(brands));
+  }, []);
 
   return (
     <>

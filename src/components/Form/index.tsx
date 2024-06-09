@@ -6,22 +6,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import AxiosInstance from "@/services/axiosInstancia";
 import { useCars } from "@/hooks/useCars";
-import { consultVehicle, getModels } from "@/services/endpoints";
+import { consultVehicle, getModels, resultPage } from "@/services/endpoints";
 import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
-import {
-  emptyBrandValue,
-  emptyModelValue,
-  emptyYearValue,
-  schema,
-} from "@/constants";
-import { InputsForm, Model, Year } from "@/types";
+import { emptyValue, schema } from "@/constants";
+import { InputsForm, Model, Year, stateType } from "@/types";
 import { RHFAutocompleteField } from "../RHFAutocompleteField";
+import { consultCarOne, modelOne } from "@/mock";
+import { convertArray } from "@/utils";
+import { useDispatch, useSelector } from "react-redux";
+import { setCarConsulted } from "@/store/reducers/car";
 
 export const Form = () => {
   const [currentOptionsModels, setCurrentOptionsModels] = useState<Model[]>([]);
   const [currentOptionsYears, setCurrentOptionsYears] = useState<Year[]>([]);
   const router = useRouter();
-  const { brandCars, setCarConsulted } = useCars();
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     watch,
@@ -29,15 +28,16 @@ export const Form = () => {
     control,
     reset,
     setValue,
-    getValues,
   } = useForm<InputsForm>({
     resolver: yupResolver(schema),
     defaultValues: {
-      brand: emptyBrandValue,
-      model: emptyModelValue,
-      year: emptyYearValue,
+      brand: emptyValue,
+      model: emptyValue,
+      year: emptyValue,
     },
   });
+
+  const brands = useSelector((state: stateType) => state.brands);
 
   const currentBrand = watch("brand");
   const currentModel = watch("model");
@@ -50,19 +50,20 @@ export const Form = () => {
 
   const onSubmit: SubmitHandler<InputsForm> = async (data) => {
     const { brand, model, year } = data;
-
+    console.log(data);
     try {
-      const response = await AxiosInstance.get<any>(
-        consultVehicle(brand, model, year)
-      );
+      // const response = await AxiosInstance.get<any>(
+      //   consultVehicle(brand, model, year)
+      // );
+      const response = { data: { ...consultCarOne } };
       const carConsulted = {
         yearCar: response.data.AnoModelo,
         brandCar: response.data.Marca,
         modelCar: response.data.Modelo,
         priceCar: response.data.Valor,
       };
-      setCarConsulted(carConsulted);
-      router.push("/result");
+      dispatch(setCarConsulted(carConsulted));
+      router.push(resultPage);
     } catch (error) {
       alert(
         "Erro ao buscar por esses dados. O erro é na API. Por favor, tente outro modelo!!"
@@ -78,39 +79,28 @@ export const Form = () => {
   const clearFields = () => {
     setCurrentOptionsModels([]);
     setCurrentOptionsYears([]);
-    setValue("model", emptyModelValue);
-    setValue("year", emptyYearValue);
+    setValue("model", emptyValue);
+    setValue("year", emptyValue);
   };
 
   const clearFieldYear = () => {
-    setValue("year", emptyYearValue);
+    setValue("year", emptyValue);
   };
 
   const getModelsCurrentBrand = async (brandId: string) => {
     if (brandId == undefined) return;
-    const response = await AxiosInstance.get<any>(getModels(brandId));
+    // const response = await AxiosInstance.get<any>(getModels(brandId));
+    const response = { data: { ...modelOne } };
     const { modelos, anos } = response.data;
 
-    setCurrentOptionsModels(
-      () =>
-        modelos.map((item: any) => ({
-          label: item.nome,
-          id: item.codigo,
-        })) as unknown as Model[]
-    );
-    setCurrentOptionsYears(
-      () =>
-        anos.map((item: any) => ({
-          label: item.nome,
-          id: item.codigo,
-        })) as unknown as Year[]
-    );
+    setCurrentOptionsModels(() => convertArray(modelos));
+    setCurrentOptionsYears(() => convertArray(anos));
   };
 
   useEffect(() => {
     if (currentBrand === undefined) return;
 
-    const brandIsEmpty = currentBrand === emptyBrandValue;
+    const brandIsEmpty = currentBrand === emptyValue;
     const modelIsUndefined = currentModel === undefined;
     const yearIsUndefined = currentYear === undefined;
 
@@ -125,19 +115,20 @@ export const Form = () => {
   }, [currentBrand]);
 
   useEffect(() => {
-    const modelIsEmpty = currentModel === emptyModelValue;
-    const yearIsNotEmpty = currentYear !== "";
+    const modelIsEmpty = currentModel === emptyValue;
+    const yearIsNotEmpty = currentYear !== emptyValue;
 
     if (modelIsEmpty) return;
 
     if (yearIsNotEmpty) {
       clearFieldYear();
+
       return;
     }
   }, [currentModel]);
 
   useEffect(() => {
-    const yearIsEmpty = currentYear === emptyYearValue;
+    const yearIsEmpty = currentYear === emptyValue;
 
     if (yearIsEmpty) {
       clearFieldYear();
@@ -149,18 +140,16 @@ export const Form = () => {
     <CardCustomized sx={{ maxWidth: 540, width: 540 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RHFAutocompleteField
-          options={brandCars}
+          options={brands}
           control={control}
           name={"brand"}
           placeholder={"Marca"}
-          formFieldValue={getValues("brand")}
         />
         <RHFAutocompleteField
           options={currentOptionsModels}
           control={control}
           name={"model"}
           placeholder={"Modelo"}
-          formFieldValue={getValues("model")}
         />{" "}
         <Collapse in={modelWasSelected}>
           <RHFAutocompleteField
@@ -168,7 +157,6 @@ export const Form = () => {
             control={control}
             name={"year"}
             placeholder={"Ano"}
-            formFieldValue={getValues("year")}
           />
         </Collapse>
         <ContainerActions check={modelWasSelected}>

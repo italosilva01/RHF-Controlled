@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Controller, Control, Path, FieldValues } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -11,7 +10,6 @@ interface RHFAutocompleteFieldProps<
   name: Path<TField>;
   options: O[];
   placeholder?: string;
-  formFieldValue?: any;
 }
 
 export const RHFAutocompleteField = <
@@ -20,45 +18,33 @@ export const RHFAutocompleteField = <
 >(
   props: RHFAutocompleteFieldProps<O, TField>
 ) => {
-  const [inputValue, setInputValue] = useState<string>("");
+  const { control, options, name } = props;
 
-  const { control, options, name, formFieldValue } = props;
-  useEffect(() => {
-    if (formFieldValue === "") {
-      setInputValue("");
-    }
-  }, [formFieldValue]);
   return (
     <Controller
       name={name}
       control={control}
-      rules={{
-        required: "this field is requried",
-      }}
       render={({ field, fieldState: { error } }) => {
         const { onChange, value, ref } = field;
         return (
           <>
             <Autocomplete
               value={
-                value
+                (value
                   ? options.find((option) => {
                       return value === option.id;
-                    }) ?? undefined
-                  : undefined
+                    }) ?? null
+                  : null) as NonNullable<O> | undefined
               }
               getOptionLabel={(option) => {
                 return option.label;
               }}
               onChange={(event: any, newValue) => {
                 onChange(newValue ? newValue.id : null);
-                setInputValue(newValue ? newValue.label : "");
               }}
-              id="controllable-states-demo"
               options={options}
               disableClearable
               style={{ width: 450 }}
-              inputValue={inputValue}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -66,12 +52,10 @@ export const RHFAutocompleteField = <
                   inputRef={ref}
                   error={!!error}
                   color="secondary"
+                  helperText={error?.message}
                 />
               )}
             />
-            {error ? (
-              <span style={{ color: "red" }}>{error.message}</span>
-            ) : null}
           </>
         );
       }}

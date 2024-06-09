@@ -26,8 +26,8 @@ exports[`Page Home renders without crashing 1`] = `
           <label
             class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorSecondary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined css-1v4qvbo-MuiFormLabel-root-MuiInputLabel-root"
             data-shrink="false"
-            for="controllable-states-demo"
-            id="controllable-states-demo-label"
+            for=":r0:"
+            id=":r0:-label"
           >
             Marca
           </label>
@@ -41,7 +41,7 @@ exports[`Page Home renders without crashing 1`] = `
               autocapitalize="none"
               autocomplete="off"
               class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
-              id="controllable-states-demo"
+              id=":r0:"
               role="combobox"
               spellcheck="false"
               type="text"
@@ -98,8 +98,8 @@ exports[`Page Home renders without crashing 1`] = `
           <label
             class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorSecondary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined css-1v4qvbo-MuiFormLabel-root-MuiInputLabel-root"
             data-shrink="false"
-            for="controllable-states-demo"
-            id="controllable-states-demo-label"
+            for=":r2:"
+            id=":r2:-label"
           >
             Modelo
           </label>
@@ -113,7 +113,7 @@ exports[`Page Home renders without crashing 1`] = `
               autocapitalize="none"
               autocomplete="off"
               class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
-              id="controllable-states-demo"
+              id=":r2:"
               role="combobox"
               spellcheck="false"
               type="text"
@@ -181,8 +181,8 @@ exports[`Page Home renders without crashing 1`] = `
                 <label
                   class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorSecondary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined css-1v4qvbo-MuiFormLabel-root-MuiInputLabel-root"
                   data-shrink="false"
-                  for="controllable-states-demo"
-                  id="controllable-states-demo-label"
+                  for=":r4:"
+                  id=":r4:-label"
                 >
                   Ano
                 </label>
@@ -196,7 +196,7 @@ exports[`Page Home renders without crashing 1`] = `
                     autocapitalize="none"
                     autocomplete="off"
                     class="MuiInputBase-input MuiOutlinedInput-input MuiInputBase-inputAdornedEnd MuiAutocomplete-input MuiAutocomplete-inputFocused css-nxo287-MuiInputBase-input-MuiOutlinedInput-input"
-                    id="controllable-states-demo"
+                    id=":r4:"
                     role="combobox"
                     spellcheck="false"
                     type="text"
