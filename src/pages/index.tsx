@@ -2,12 +2,9 @@ import type { InferGetStaticPropsType, GetStaticProps } from "next";
 import { Form } from "@components/Form";
 import AxiosInstance from "@/services/axiosInstancia";
 import { Brand } from "@/types";
-import { useCars } from "@/hooks/useCars";
 import { useEffect } from "react";
 import { TypographyCustomized } from "@/components/TypographyCustomized";
 import { getBrandsCars } from "@/services/endpoints";
-import { brands } from "@/mock";
-import { convertArray } from "@/utils";
 import { useDispatch } from "react-redux";
 import { setupBrands } from "@/store/reducers/brands";
 
@@ -15,6 +12,7 @@ export default function Home({
   brands,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(setupBrands(brands));
   }, []);

@@ -5,13 +5,11 @@ import { Collapse } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import AxiosInstance from "@/services/axiosInstancia";
-import { useCars } from "@/hooks/useCars";
 import { consultVehicle, getModels, resultPage } from "@/services/endpoints";
 import { CardCustomized, ContainerActions, ButtonStyled } from "./style";
 import { emptyValue, schema } from "@/constants";
 import { InputsForm, Model, Year, stateType } from "@/types";
 import { RHFAutocompleteField } from "../RHFAutocompleteField";
-import { consultCarOne, modelOne } from "@/mock";
 import { convertArray } from "@/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setCarConsulted } from "@/store/reducers/car";
@@ -52,10 +50,10 @@ export const Form = () => {
     const { brand, model, year } = data;
     console.log(data);
     try {
-      // const response = await AxiosInstance.get<any>(
-      //   consultVehicle(brand, model, year)
-      // );
-      const response = { data: { ...consultCarOne } };
+      const response = await AxiosInstance.get<any>(
+        consultVehicle(brand, model, year)
+      );
+
       const carConsulted = {
         yearCar: response.data.AnoModelo,
         brandCar: response.data.Marca,
@@ -89,8 +87,7 @@ export const Form = () => {
 
   const getModelsCurrentBrand = async (brandId: string) => {
     if (brandId == undefined) return;
-    // const response = await AxiosInstance.get<any>(getModels(brandId));
-    const response = { data: { ...modelOne } };
+    const response = await AxiosInstance.get<any>(getModels(brandId));
     const { modelos, anos } = response.data;
 
     setCurrentOptionsModels(() => convertArray(modelos));
