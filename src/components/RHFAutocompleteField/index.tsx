@@ -1,14 +1,15 @@
 import { Controller, Control, Path, FieldValues } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import emotionStyled from "@emotion/styled";
 
 interface RHFAutocompleteFieldProps<
   O extends { id: string; label: string },
   TField extends FieldValues
 > {
   control: Control<TField>;
-  name: Path<TField>;
-  options: O[];
+  name: string;
+  options: O[] & { label: string };
   placeholder?: string;
 }
 
@@ -28,11 +29,11 @@ export const RHFAutocompleteField = <
         const { onChange, value, ref } = field;
         return (
           <>
-            <Autocomplete
+            <AutocompleteStyled
               value={
                 (value
                   ? options.find((option) => {
-                      return value === option.id;
+                      return value === option.label;
                     }) ?? null
                   : null) as NonNullable<O> | undefined
               }
@@ -40,11 +41,10 @@ export const RHFAutocompleteField = <
                 return option.label;
               }}
               onChange={(event: any, newValue) => {
-                onChange(newValue ? newValue.id : null);
+                onChange(newValue ? newValue.label : null);
               }}
               options={options}
               disableClearable
-              style={{ width: 450 }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -62,3 +62,7 @@ export const RHFAutocompleteField = <
     />
   );
 };
+
+export const AutocompleteStyled = emotionStyled(Autocomplete)`
+  width: 350px;
+`;

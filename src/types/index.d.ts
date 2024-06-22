@@ -7,9 +7,9 @@ export type Model = Brand;
 export type Year = Brand;
 
 export type InputsForm = {
-  brand: string;
-  model: string;
-  year: string;
+  autocompleteLessControlled: string;
+  // autocompleteWithControlled: string;
+  // year: string;
 };
 
 export type Car = {

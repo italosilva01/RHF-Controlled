@@ -1,7 +1,6 @@
 import { Roboto } from "next/font/google";
 import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
-//import { CarsProvider } from "@/context/CarsContext";
 import "@/styles/globals.css";
 import { Content } from "@components/Content";
 import emotionStyled from "@emotion/styled";
@@ -16,7 +15,6 @@ export default function App({ Component, pageProps }: AppProps) {
   const isResultRoute = router.pathname === "/result";
 
   return (
-    //<CarsProvider>
     <Provider store={store}>
       <MainStyled
         className={`${roboto.className}`}
@@ -27,7 +25,6 @@ export default function App({ Component, pageProps }: AppProps) {
         </Content>
       </MainStyled>
     </Provider>
-    //</CarsProvider>
   );
 }
 
